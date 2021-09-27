@@ -72,13 +72,14 @@ const createTransaction = function () {
 
 const calculateTransactionsPrice = function () {
   let totalPrice = 0;
+
   transactions.forEach(x => {
     let totalPerTransaction = 0;
     totalPerTransaction = x.quantity * x.price;
     totalPrice += totalPerTransaction;
   });
-  console.log(totalPrice);
 
+  document.getElementById('price-span').textContent = totalPrice;
   return totalPrice;
 };
 

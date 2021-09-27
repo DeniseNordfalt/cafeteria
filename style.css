@@ -20,10 +20,9 @@ body {
   align-items: center;
   width: 53%;
 }
-#transactions-section {
-}
+
 #transactions-heading {
-  padding: 20px 10px;
+  padding: 10px;
 }
 .transaction {
   padding: 0 0 10px 10px;
