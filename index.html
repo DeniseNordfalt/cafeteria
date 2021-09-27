@@ -12,5 +12,27 @@
     <link rel="stylesheet" href="style.css" />
     <script src="app.js"></script>
   </head>
-  <body></body>
+  <body>
+    <header id="form-container">
+      <form id="input-form">
+        <div class="user-input">
+          <label for="coffee-menu">Välj kaffesort</label>
+          <input id="coffee-menu" />
+        </div>
+        <div class="user-input">
+          <label for="number-of-cups">Antal</label>
+          <input
+            type="number"
+            id="number-of-cups"
+            placeholder="tex: 1"
+            min="1"
+            max="20"
+          />
+        </div>
+      </form>
+    </header>
+    <div id="transactions-section">
+      <h1 id="transactions-heading">Dina transaktioner</h1>
+    </div>
+  </body>
 </html>
