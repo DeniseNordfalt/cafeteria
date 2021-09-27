@@ -33,7 +33,10 @@ const transactionsSection = document.getElementById('transactions-section');
 
 const btnOnClick = function (e) {
   e.preventDefault();
-  console.log(createTransaction());
+
+  createTransaction();
+  saveTranaction();
+  calculateTransactionsPrice();
   inputForm.reset();
   console.log(...transactions);
 };
@@ -42,22 +45,41 @@ const saveTranaction = function () {
   const transaction = {
     coffee: coffees[coffeeSort.value].name,
     quantity: numberOfCoffeeCups.value,
+    price: coffees[coffeeSort.value].price,
   };
+
   transactions.push(transaction);
 };
 
+const createTransactionElement = function () {
+  const transaction = document.createElement('p');
+
+  transaction.classList.add('transaction');
+
+  return transaction;
+};
 const createTransaction = function () {
-  saveTranaction();
   const transactionText = `Du köpte ${numberOfCoffeeCups.value} st ${
     coffees[coffeeSort.value].name
   } för ${coffees[coffeeSort.value].price} kr styck. Summa: ${
     numberOfCoffeeCups.value * coffees[coffeeSort.value].price
   }  `;
-  const transaction = document.createElement('p');
+
+  const transaction = createTransactionElement();
   transaction.innerText = transactionText;
-  transaction.classList.add('transaction');
   transactionsSection.appendChild(transaction);
-  return transactionText;
+};
+
+const calculateTransactionsPrice = function () {
+  let totalPrice = 0;
+  transactions.forEach(x => {
+    let totalPerTransaction = 0;
+    totalPerTransaction = x.quantity * x.price;
+    totalPrice += totalPerTransaction;
+  });
+  console.log(totalPrice);
+
+  return totalPrice;
 };
 
 formSubmitButton.addEventListener('click', btnOnClick);
