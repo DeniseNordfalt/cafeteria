@@ -16,6 +16,7 @@ class Customer {
     this.totalSpent = 0;
     this.numberOfCups = 0;
   }
+
   addTransactions(name, quantity, price) {
     this.transactions.push({
       name,
@@ -38,17 +39,16 @@ class Customer {
     this.transactions.forEach((transaction) => {
       numberOfCups += transaction.quantity;
     });
-    console.log("numberOfCups: ", numberOfCups);
     this.numberOfCups = numberOfCups;
     return numberOfCups;
   }
+
   getMembershipStatus(numberOfCups) {
     if (numberOfCups > ZERO && numberOfCups < BRONZE) return "Brons";
     else if (numberOfCups >= BRONZE && numberOfCups < SILVER) return "Silver";
     else return "Gold";
   }
 }
-
 const customer = new Customer();
 
 const coffeeMenu = document.getElementById("coffeeMenu");
@@ -57,6 +57,7 @@ const submitButton = document.getElementById("submitButton");
 const inputForm = document.getElementById("inputForm");
 const totalSpentParagraph = document.getElementById("amountSpent");
 const membershipStatusParagraph = document.getElementById("membershipStatus");
+const transactionsSection = document.getElementById("transactionsSection");
 
 submitButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -66,6 +67,15 @@ submitButton.addEventListener("click", function (e) {
     Number(numberOfCoffees.value),
     coffees[coffeeMenu.value].price
   );
+  console.log(
+    renderTransaction(
+      Number(numberOfCoffees.value),
+      coffees[coffeeMenu.value].name,
+      coffees[coffeeMenu.value].price
+    )
+  );
+
+  //
 
   console.log(...customer.transactions);
   console.log(customer.totalSpent);
@@ -79,3 +89,14 @@ submitButton.addEventListener("click", function (e) {
 
   inputForm.reset();
 });
+
+const renderTransaction = function (quantity, sort, price) {
+  const transactionText = `Du Köpte ${quantity} st ${sort} för ${price} kr styck. Summa: ${
+    quantity * price
+  }`;
+
+  const transactionOverview = document.createElement("p");
+  transactionOverview.innerText = transactionText;
+
+  transactionsSection.appendChild(transactionOverview);
+};
