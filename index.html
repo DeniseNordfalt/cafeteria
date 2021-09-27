@@ -8,16 +8,16 @@
   </head>
   <body>
     <div>
-      <form>
+      <form id="inputForm">
         <label for="coffeeMenu">Välj kaffesort</label>
         <select name="coffeeChoice" id="coffeeMenu">
-          <option value="">Brygg kaffe - 20 kr</option>
-          <option value="">Cappucino - 30 kr</option>
-          <option value="">Latte - 40 kr</option>
+          <option value="0">Brygg kaffe - 20 kr</option>
+          <option value="1">Cappucino - 30 kr</option>
+          <option value="2">Latte - 40 kr</option>
         </select>
         <label for="numberOfCoffees">Antal</label>
         <input type="number" id="numberOfCoffees" min="1" max="10" value="1" />
-        <button>Köp</button>
+        <button id="submitButton">Köp</button>
       </form>
       <p>Du har handlat för <span id="amountSpent">0</span> kr</p>
       <p>Medlemskapstatus: <span id="membershipStatus">Brons</span></p>

@@ -6,10 +6,15 @@ const coffees = [
   { name: "Latte", price: 40 },
 ];
 
+const ZERO = 0;
+const BRONZE = 10;
+const SILVER = 30;
+
 class Customer {
   constructor() {
     this.transactions = [];
     this.totalSpent = 0;
+    this.numberOfCups = 0;
   }
   addTransactions(name, quantity, price) {
     this.transactions.push({
@@ -18,15 +23,32 @@ class Customer {
       price,
     });
   }
+
   calculateTotalSpent() {
     let totalSum = 0;
     this.transactions.forEach((transaction) => {
       totalSum += transaction.price * transaction.quantity;
     });
-    this.totalSpent += totalSum;
+    this.totalSpent = totalSum;
     return totalSum;
   }
+
+  calculateNumberOfCups() {
+    let numberOfCups = 0;
+    this.transactions.forEach((transaction) => {
+      numberOfCups += transaction.quantity;
+    });
+    console.log("numberOfCups: ", numberOfCups);
+    this.numberOfCups = numberOfCups;
+    return numberOfCups;
+  }
+  getMembershipStatus(numberOfCups) {
+    if (numberOfCups > ZERO && numberOfCups < BRONZE) return "Brons";
+    else if (numberOfCups >= BRONZE && numberOfCups < SILVER) return "Silver";
+    else return "Gold";
+  }
 }
+
 const customer = new Customer();
 
 const coffeeMenu = document.getElementById("coffeeMenu");
@@ -34,17 +56,26 @@ const numberOfCoffees = document.getElementById("numberOfCoffees");
 const submitButton = document.getElementById("submitButton");
 const inputForm = document.getElementById("inputForm");
 const totalSpentParagraph = document.getElementById("amountSpent");
+const membershipStatusParagraph = document.getElementById("membershipStatus");
+
 submitButton.addEventListener("click", function (e) {
   e.preventDefault();
+
   customer.addTransactions(
     coffees[coffeeMenu.value].name,
-    numberOfCoffees.value,
+    Number(numberOfCoffees.value),
     coffees[coffeeMenu.value].price
   );
+
   console.log(...customer.transactions);
   console.log(customer.totalSpent);
 
   totalSpentParagraph.textContent = customer.calculateTotalSpent();
+  membershipStatusParagraph.textContent = customer.getMembershipStatus(
+    customer.calculateNumberOfCups()
+  );
+
+  customer.calculateNumberOfCups();
 
   inputForm.reset();
 });
