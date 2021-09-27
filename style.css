@@ -5,19 +5,26 @@
 }
 body {
   font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
 }
 
 #form-container {
-  height: 5vh;
+  height: 15vh;
   border-bottom: solid 1px #000;
+  margin: 10px;
 }
 #input-form {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 55%;
+  width: 53%;
 }
 #transactions-section {
-  margin-top: 30px;
+}
+#transactions-heading {
+  padding: 20px 10px;
+}
+.transaction {
+  padding: 0 0 10px 10px;
 }
