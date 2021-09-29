@@ -57,27 +57,38 @@ const membershipStatusParagraph = document.getElementById("membershipStatus");
 const transactionsSection = document.getElementById("transactionsSection");
 const transactionsHeading = document.getElementById("transactionsHeading");
 
+window.addEventListener("load", function () {
+  coffees.forEach((coffee, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.innerText = `${coffee.name} - ${coffee.price} kr`;
+    coffeeMenu.appendChild(option);
+  });
+});
+
 submitButton.addEventListener("click", function (e) {
   e.preventDefault();
 
-  customer.addTransactions(
-    coffees[coffeeMenu.value].name,
-    Number(numberOfCoffees.value),
-    coffees[coffeeMenu.value].price
-  );
+  if (validateInput()) {
+    customer.addTransactions(
+      coffees[coffeeMenu.value].name,
+      Number(numberOfCoffees.value),
+      coffees[coffeeMenu.value].price
+    );
 
-  renderTransaction(
-    Number(numberOfCoffees.value),
-    coffees[coffeeMenu.value].name,
-    coffees[coffeeMenu.value].price
-  );
+    renderTransaction(
+      Number(numberOfCoffees.value),
+      coffees[coffeeMenu.value].name,
+      coffees[coffeeMenu.value].price
+    );
 
-  customer.calculateCupsAndSum();
+    customer.calculateCupsAndSum();
 
-  totalSpentParagraph.textContent = customer.totalSpent;
-  membershipStatusParagraph.textContent = customer.getMembershipStatus(
-    customer.numberOfCups
-  );
+    totalSpentParagraph.textContent = customer.totalSpent;
+    membershipStatusParagraph.textContent = customer.getMembershipStatus(
+      customer.numberOfCups
+    );
+  }
 
   inputForm.reset();
 });
@@ -96,11 +107,10 @@ const renderTransaction = function (quantity, sort, price) {
   );
 };
 
-window.addEventListener("load", function () {
-  coffees.forEach((coffee, index) => {
-    const option = document.createElement("option");
-    option.value = index;
-    option.innerText = `${coffee.name} - ${coffee.price} kr`;
-    coffeeMenu.appendChild(option);
-  });
-});
+const validateInput = function () {
+  if (numberOfCoffees.value <= 0) {
+    alert("Du måste köpa minst en kopp kaffe❌");
+    return false;
+  }
+  return true;
+};
