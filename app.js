@@ -6,9 +6,9 @@ const coffees = [
   { name: "Latte", price: 40 },
 ];
 
-const ZERO = 0;
-const BRONZE = 10;
-const SILVER = 30;
+const BRONZE = 0;
+const SILVER = 10;
+const GOLD = 30;
 
 class Customer {
   constructor() {
@@ -25,39 +25,37 @@ class Customer {
     });
   }
 
-  calculateTotalSpent() {
+  calculateCupsAndSum() {
     let totalSum = 0;
+    let totalCups = 0;
+
     this.transactions.forEach((transaction) => {
       totalSum += transaction.price * transaction.quantity;
+      totalCups += transaction.quantity;
     });
-    this.totalSpent = totalSum;
-    return totalSum;
-  }
 
-  calculateNumberOfCups() {
-    let numberOfCups = 0;
-    this.transactions.forEach((transaction) => {
-      numberOfCups += transaction.quantity;
-    });
-    this.numberOfCups = numberOfCups;
-    return numberOfCups;
+    this.totalSpent = totalSum;
+    this.numberOfCups = totalCups;
   }
 
   getMembershipStatus(numberOfCups) {
-    if (numberOfCups > ZERO && numberOfCups < BRONZE) return "Brons";
-    else if (numberOfCups >= BRONZE && numberOfCups < SILVER) return "Silver";
+    if (numberOfCups > BRONZE && numberOfCups < SILVER) return "Brons";
+    else if (numberOfCups >= SILVER && numberOfCups < GOLD) return "Silver";
     else return "Gold";
   }
 }
 const customer = new Customer();
 
+const inputForm = document.getElementById("inputForm");
 const coffeeMenu = document.getElementById("coffeeMenu");
 const numberOfCoffees = document.getElementById("numberOfCoffees");
 const submitButton = document.getElementById("submitButton");
-const inputForm = document.getElementById("inputForm");
+
 const totalSpentParagraph = document.getElementById("amountSpent");
 const membershipStatusParagraph = document.getElementById("membershipStatus");
+
 const transactionsSection = document.getElementById("transactionsSection");
+const transactionsHeading = document.getElementById("transactionsHeading");
 
 submitButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -67,25 +65,19 @@ submitButton.addEventListener("click", function (e) {
     Number(numberOfCoffees.value),
     coffees[coffeeMenu.value].price
   );
-  console.log(
-    renderTransaction(
-      Number(numberOfCoffees.value),
-      coffees[coffeeMenu.value].name,
-      coffees[coffeeMenu.value].price
-    )
+
+  renderTransaction(
+    Number(numberOfCoffees.value),
+    coffees[coffeeMenu.value].name,
+    coffees[coffeeMenu.value].price
   );
 
-  //
+  customer.calculateCupsAndSum();
 
-  console.log(...customer.transactions);
-  console.log(customer.totalSpent);
-
-  totalSpentParagraph.textContent = customer.calculateTotalSpent();
+  totalSpentParagraph.textContent = customer.totalSpent;
   membershipStatusParagraph.textContent = customer.getMembershipStatus(
-    customer.calculateNumberOfCups()
+    customer.numberOfCups
   );
-
-  customer.calculateNumberOfCups();
 
   inputForm.reset();
 });
@@ -98,5 +90,8 @@ const renderTransaction = function (quantity, sort, price) {
   const transactionOverview = document.createElement("p");
   transactionOverview.innerText = transactionText;
 
-  transactionsSection.appendChild(transactionOverview);
+  transactionsSection.insertBefore(
+    transactionOverview,
+    transactionsHeading.nextSibling
+  );
 };
