@@ -10,6 +10,9 @@ const BRONZE = 0;
 const SILVER = 10;
 const GOLD = 30;
 
+const FIVE_HUNDRED = 500;
+const TEN_PERCENT = 0.1;
+
 class Customer {
   constructor() {
     this.transactions = [];
@@ -18,6 +21,10 @@ class Customer {
   }
 
   addTransactions(name, quantity, price) {
+    if (this.getDiscount()) {
+      price -= price * TEN_PERCENT;
+    }
+
     this.transactions.push({
       name,
       quantity,
@@ -42,6 +49,12 @@ class Customer {
     if (numberOfCups > BRONZE && numberOfCups < SILVER) return "Brons";
     else if (numberOfCups >= SILVER && numberOfCups < GOLD) return "Silver";
     else return "Gold";
+  }
+  getDiscount() {
+    if (this.totalSpent >= FIVE_HUNDRED) {
+      return true;
+    }
+    return false;
   }
 }
 const customer = new Customer();
@@ -84,19 +97,29 @@ submitButton.addEventListener("click", function (e) {
 
     customer.calculateCupsAndSum();
 
-    totalSpentParagraph.textContent = customer.totalSpent;
-    membershipStatusParagraph.textContent = customer.getMembershipStatus(
-      customer.numberOfCups
-    );
+    renderCostAndMembershipStatus();
   }
 
   inputForm.reset();
 });
 
 const renderTransaction = function (quantity, sort, price) {
+  if (customer.getDiscount()) {
+    price -= price * TEN_PERCENT;
+  }
+
   const transactionText = `Du Köpte ${quantity} st ${sort} för ${price} kr styck. Summa: ${
     quantity * price
   }`;
+
+  const transactionParagraph = document.getElementById("transactionParagraph");
+
+  if (
+    typeof transactionParagraph != "undefined" &&
+    transactionParagraph != null
+  ) {
+    transactionsSection.removeChild(transactionParagraph);
+  }
 
   const transactionOverview = document.createElement("p");
   transactionOverview.innerText = transactionText;
@@ -111,6 +134,16 @@ const validateInput = function () {
   if (numberOfCoffees.value <= 0) {
     alert("Du måste köpa minst en kopp kaffe❌");
     return false;
+  } else if (numberOfCoffees.value > 10) {
+    alert("Du får köpa upp till tio kaffe koppar❌");
+    return false;
   }
   return true;
+};
+
+const renderCostAndMembershipStatus = function () {
+  totalSpentParagraph.textContent = customer.totalSpent;
+  membershipStatusParagraph.textContent = customer.getMembershipStatus(
+    customer.numberOfCups
+  );
 };
