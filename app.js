@@ -95,3 +95,12 @@ const renderTransaction = function (quantity, sort, price) {
     transactionsHeading.nextSibling
   );
 };
+
+window.addEventListener("load", function () {
+  coffees.forEach((coffee, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.innerText = `${coffee.name} - ${coffee.price} kr`;
+    coffeeMenu.appendChild(option);
+  });
+});
